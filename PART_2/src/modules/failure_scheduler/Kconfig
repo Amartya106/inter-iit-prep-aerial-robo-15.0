@@ -1,0 +1,5 @@
+menuconfig MODULES_FAILURE_SCHEDULER
+	bool "failure_scheduler"
+	default n
+	---help---
+		Enable support for failure_scheduler
