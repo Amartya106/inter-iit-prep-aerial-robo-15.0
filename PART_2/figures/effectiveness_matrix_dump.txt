@@ -1,0 +1,123 @@
+================================================================================
+ Effectiveness matrix at each level — captured live via `control_allocator status`
+ PART 2, Phase 2 · PX4 v1.18.0-beta1-596-g0fb3847cd9 · gz_x500 · Gazebo Harmonic
+
+ Columns are rotors 0-3. Rows: Mx My Mz (moments), Fx Fy Fz (forces).
+ Only rotor 0's column is scaled; columns 1-3 are unchanged throughout.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+ 100% — nominal
+--------------------------------------------------------------------------------
+INFO  [control_allocator] Effectiveness Source: Multirotor
+INFO  [control_allocator]   Effectiveness =
+  | 0      | 1      | 2      | 3
+Mx|-1.13100  1.13100  1.13100 -1.13100
+My| 1.13100 -1.13100  1.13100 -1.13100
+Mz| 0.32500  0.32500 -0.32500 -0.32500
+Fx| 0        0        0        0
+Fy| 0        0        0        0
+Fz|-6.50000 -6.50000 -6.50000 -6.50000
+INFO  [control_allocator]   minimum =
+  | 0        0        0        0
+INFO  [control_allocator]   maximum =
+  | 1.00000  1.00000  1.00000  1.00000
+INFO  [control_allocator]   Configured actuators: 4
+
+
+--------------------------------------------------------------------------------
+ 75%   ("rotor 0 effectiveness -> 75%")
+--------------------------------------------------------------------------------
+INFO  [control_allocator] Effectiveness Source: Multirotor
+INFO  [control_allocator]   Effectiveness =
+  | 0      | 1      | 2      | 3
+Mx|-0.84825  1.13100  1.13100 -1.13100
+My| 0.84825 -1.13100  1.13100 -1.13100
+Mz| 0.24375  0.32500 -0.32500 -0.32500
+Fx| 0        0        0        0
+Fy| 0        0        0        0
+Fz|-4.87500 -6.50000 -6.50000 -6.50000
+INFO  [control_allocator]   minimum =
+  | 0        0        0        0
+INFO  [control_allocator]   maximum =
+  | 1.00000  1.00000  1.00000  1.00000
+INFO  [control_allocator]   Configured actuators: 4
+
+
+--------------------------------------------------------------------------------
+ 50%   ("rotor 0 effectiveness -> 50%")
+--------------------------------------------------------------------------------
+INFO  [control_allocator] Effectiveness Source: Multirotor
+INFO  [control_allocator]   Effectiveness =
+  | 0      | 1      | 2      | 3
+Mx|-0.56550  1.13100  1.13100 -1.13100
+My| 0.56550 -1.13100  1.13100 -1.13100
+Mz| 0.16250  0.32500 -0.32500 -0.32500
+Fx| 0        0        0        0
+Fy| 0        0        0        0
+Fz|-3.25000 -6.50000 -6.50000 -6.50000
+INFO  [control_allocator]   minimum =
+  | 0        0        0        0
+INFO  [control_allocator]   maximum =
+  | 1.00000  1.00000  1.00000  1.00000
+INFO  [control_allocator]   Configured actuators: 4
+
+
+--------------------------------------------------------------------------------
+ 25%   ("rotor 0 effectiveness -> 25%")
+--------------------------------------------------------------------------------
+INFO  [control_allocator] Effectiveness Source: Multirotor
+INFO  [control_allocator]   Effectiveness =
+  | 0      | 1      | 2      | 3
+Mx|-0.28275  1.13100  1.13100 -1.13100
+My| 0.28275 -1.13100  1.13100 -1.13100
+Mz| 0.08125  0.32500 -0.32500 -0.32500
+Fx| 0        0        0        0
+Fy| 0        0        0        0
+Fz|-1.62500 -6.50000 -6.50000 -6.50000
+INFO  [control_allocator]   minimum =
+  | 0        0        0        0
+INFO  [control_allocator]   maximum =
+  | 1.00000  1.00000  1.00000  1.00000
+INFO  [control_allocator]   Configured actuators: 4
+
+
+--------------------------------------------------------------------------------
+ 0%    ("rotor 0 effectiveness -> 0%")
+       WARN [health_and_arming_checks] Preflight Fail: Attitude failure (roll)
+--------------------------------------------------------------------------------
+INFO  [control_allocator] Effectiveness Source: Multirotor
+INFO  [control_allocator]   Effectiveness =
+  | 0      | 1      | 2      | 3
+Mx| 0        1.13100  1.13100 -1.13100
+My| 0       -1.13100  1.13100 -1.13100
+Mz| 0        0.32500 -0.32500 -0.32500
+Fx| 0        0        0        0
+Fy| 0        0        0        0
+Fz| 0       -6.50000 -6.50000 -6.50000
+INFO  [control_allocator]   minimum =
+  | 0        0        0        0
+INFO  [control_allocator]   maximum =
+  | 1.00000  1.00000  1.00000  1.00000
+INFO  [control_allocator]   Configured actuators: 4
+
+
+================================================================================
+ Summary — rotor 0 column
+================================================================================
+
+ Level     Mx         My        Mz        Fz        ratio to nominal
+ 100%     -1.13100   1.13100   0.32500  -6.50000    1.000
+  75%     -0.84825   0.84825   0.24375  -4.87500    0.750
+  50%     -0.56550   0.56550   0.16250  -3.25000    0.500
+  25%     -0.28275   0.28275   0.08125  -1.62500    0.250
+   0%      0         0         0         0          0.000
+
+ Every row of column 0 scales by exactly the commanded factor; columns 1-3 are
+ untouched. Fx and Fy are zero for all rotors because every thrust axis is
+ vertical in the standard quadrotor geometry.
+
+ At 0% the column is fully zeroed while four actuators remain configured, so
+ rotor 0 contributes nothing to any axis and the allocator commands it to zero.
+================================================================================
