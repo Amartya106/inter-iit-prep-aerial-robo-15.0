@@ -14,11 +14,7 @@ A runtime mechanism that scales a selected rotor's column in PX4's
 control-allocation effectiveness matrix while airborne, characterized at 100%,
 75%, 50%, 25% and 0%.
 
-The mechanism changes the allocator's *model* of the rotor; the simulated motor
-is never touched. That distinction drives the result, and Section 8 develops it
-against the Phase 1 reference.
-
-**Result:** a quadrotor tolerates modelled effectiveness loss far better than an
+**Result:** A quadrotor tolerates modelled effectiveness loss far better than an
 unmodelled motor failure. At 75% and 50% the vehicle held 20 m with no
 measurable change in motor commands. Failure at 25% was a loss of *thrust*
 authority — smooth, coordinated, attitude-stable — rather than the immediate
@@ -34,19 +30,19 @@ PART_2/
 ├── README.md
 ├── src/modules/
 │   ├── control_allocator/
-│   │   ├── ControlAllocator.cpp                 
+│   │   ├── ControlAllocator.cpp
 │   │   ├── ControlAllocator.hpp
 │   │   └── VehicleActuatorEffectiveness/
-│   │       ├── ActuatorEffectivenessRotors.cpp 
+│   │       ├── ActuatorEffectivenessRotors.cpp
 │   │       ├── ActuatorEffectivenessRotors.hpp
 │   │       └── ActuatorEffectivenessMultirotor.hpp
-│   ├── failure_scheduler/                       
-│   └── logger/logged_topics.cpp                
+│   ├── failure_scheduler/
+│   └── logger/logged_topics.cpp
 ├── msg/
-│   ├── RotorEffectiveness.msg                   
+│   ├── RotorEffectiveness.msg
 │   └── CMakeLists.txt
-├── boards/px4/sitl/default.px4board             
-├── ROMFS/.../airframes/4001_gz_x500             
+├── boards/px4/sitl/default.px4board
+├── ROMFS/.../airframes/4001_gz_x500
 ├── logs/          phase1_reference.ulg, sweep_final_recorded.ulg, sweep_pseudoinverse.ulg
 ├── figures/       phase1_reference.png, sweep_final_recorded.png, effectiveness_matrix_dump.txt
 ├── scripts/       plot.py, times.py
@@ -69,11 +65,21 @@ runs with no manual parameter entry. QGroundControl must be connected (UDP
 14550) to satisfy the GCS arming check; takeoff is commanded from there in both
 phases.
 
-**Phase 1:** `failure_scheduler start`, then take off. The module waits for a
-stable 20 m hover, holds 5 s, then publishes `VEHICLE_CMD_INJECT_FAILURE`.
+`failure_scheduler` is started automatically from the airframe file, so the two
+phases are selected by whether it is left running.
 
-**Phase 2:** take off. The sweep arms itself at stable altitude and steps
-through the five levels at 8 s intervals, logging each transition.
+**Phase 1 — reference injection.** Take off. The module waits for a stable 20 m
+hover, holds 5 s, then publishes `VEHICLE_CMD_INJECT_FAILURE`.
+
+**Phase 2 — effectiveness sweep.** Stop the scheduler first, or its injection
+will fire partway through the sweep and confound the run:
+
+```
+pxh> failure_scheduler stop
+```
+
+Then take off. The sweep arms itself at stable altitude and steps through the
+five levels at 8 s intervals, logging each transition.
 
 Neither phase needs console interaction during flight.
 
@@ -110,6 +116,8 @@ From `logs/phase1_reference.ulg`:
 
 **Detection delay: 504 ms** from injection to the allocator dropping the rotor;
 a further 816 ms to the attitude failure.
+
+![Phase 1 reference — motor commands through injection](figures/phase1_reference.png)
 
 Commands diverge essentially instantaneously at the allocator response. Motor 1
 reaches zero within ~0.2 s; motors 2 and 3 are driven to opposite extremes and
@@ -265,7 +273,9 @@ contributes nothing and the allocator commands it to zero.
 ## 7. Characterization
 
 Transitions at 55.3, 63.3, 71.3, 79.3 and 87.3 s
-(`logs/sweep_final_recorded.ulg`, `figures/sweep_final_recorded.png`).
+(`logs/sweep_final_recorded.ulg`).
+
+![Phase 2 sweep — altitude and motor commands across all five levels](figures/sweep_final_recorded.png)
 
 **100%** — applied deliberately as a control. No change in any command,
 confirming the mechanism is inert at unity.
@@ -391,4 +401,4 @@ B.Tech Electrical Engineering, IIT (BHU) Varanasi
 
 GitHub: [@Amartya106](https://github.com/Amartya106)
 
-EMail: amartyac106@gmail.com, amartya.mishra.eee25@itbhu.ac.in
+Email: amartyac106@gmail.com, amartya.mishra.eee25@itbhu.ac.in
